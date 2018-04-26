@@ -41,7 +41,7 @@ To install agent5, you need to:
 - either set `datadog_agent_version` to an existing agent5 version
   (recommended) or leave it empty to always install the latest version (`5.*`).
 
-To downgrade from agent6 to agent5, you need to:
+To downgrade from agent6 to agent5, you need to (**on centos this will only work with ansible 2.4+**):
 
 - set `datadog_agent5` to true
 - pin `datadog_agent_version` to an existing agent5 version
