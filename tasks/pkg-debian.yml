@@ -5,10 +5,18 @@
 - name: Install ubuntu apt-key server
   apt_key: id=A2923DFF56EDA6E76E55E492D3A80E30382E94DE keyserver=hkp://keyserver.ubuntu.com:80 state=present
   when: datadog_apt_key_url_new is not defined
+  retries: 10
+  delay: 6
+  register: result
+  until: result|succeeded
 
 - name: Install Datadog apt-key
   apt_key: id=A2923DFF56EDA6E76E55E492D3A80E30382E94DE url={{ datadog_apt_key_url_new }} state=present
   when: datadog_apt_key_url_new is defined
+  retries: 10
+  delay: 6
+  register: result
+  until: result|succeeded
 
 - name: Ensure Datadog non-https repositories are deprecated
   apt_repository:
