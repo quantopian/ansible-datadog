@@ -3,7 +3,15 @@
   apt: name=apt-transport-https state=present
 
 - name: Install ubuntu apt-key server
-  apt_key: id=A2923DFF56EDA6E76E55E492D3A80E30382E94DE keyserver=hkp://keyserver.ubuntu.com:80 state=present
+  shell: >
+    export KEY=A2923DFF56EDA6E76E55E492D3A80E30382E94DE;
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$KEY" ||
+    gpg --keyserver pgp.mit.edu --recv-keys "$KEY" ||
+    gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$KEY" ||
+    gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$KEY" ||
+    gpg --keyserver keyserver.pgp.com --recv-keys "$KEY"
+  args:
+    executable: /bin/bash
   when: datadog_apt_key_url_new is not defined
   retries: 10
   delay: 6
